@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         Top-level menu: Duplicate Cleaner
+         ============================================================ -->
+    <menuitem id="menu_duplicate_cleaner_root"
+              name="Duplicate Cleaner"
+              sequence="90"
+              web_icon="duplicate_data_cleaner,static/description/icon.png"/>
+
+    <!-- Dashboard -->
+    <menuitem id="menu_duplicate_cleaner_dashboard"
+              name="Dashboard"
+              parent="menu_duplicate_cleaner_root"
+              action="action_duplicate_dashboard"
+              sequence="10"/>
+
+    <!-- Duplicate Groups -->
+    <menuitem id="menu_duplicate_cleaner_groups"
+              name="Duplicate Groups"
+              parent="menu_duplicate_cleaner_root"
+              action="action_duplicate_groups"
+              sequence="20"/>
+
+    <!-- Merge History -->
+    <menuitem id="menu_duplicate_cleaner_history"
+              name="Merge History"
+              parent="menu_duplicate_cleaner_root"
+              action="action_merge_history"
+              sequence="30"/>
+</odoo>

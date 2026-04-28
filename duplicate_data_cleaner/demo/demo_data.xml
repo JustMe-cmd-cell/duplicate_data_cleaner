@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Demo data: creates a few res.partner records with duplicate emails/names
+    so the module can be tested immediately after installation.
+-->
+<odoo>
+    <data>
+
+        <!-- Duplicate pair 1: same email -->
+        <record id="demo_partner_alice_1" model="res.partner">
+            <field name="name">Alice Johnson</field>
+            <field name="email">alice.johnson@example.com</field>
+            <field name="phone">+1 555 100 0001</field>
+        </record>
+        <record id="demo_partner_alice_2" model="res.partner">
+            <field name="name">Alice Johnson (duplicate)</field>
+            <field name="email">alice.johnson@example.com</field>
+            <field name="phone">+1-555-100-0001</field>
+        </record>
+
+        <!-- Duplicate pair 2: similar names -->
+        <record id="demo_partner_bob_1" model="res.partner">
+            <field name="name">Robert Smith</field>
+            <field name="email">robert.smith@example.com</field>
+        </record>
+        <record id="demo_partner_bob_2" model="res.partner">
+            <field name="name">Robért Smith</field>
+            <field name="email">r.smith@example.com</field>
+        </record>
+
+        <!-- Duplicate pair 3: same phone -->
+        <record id="demo_partner_carol_1" model="res.partner">
+            <field name="name">Carol White</field>
+            <field name="phone">+44 20 7946 0958</field>
+        </record>
+        <record id="demo_partner_carol_2" model="res.partner">
+            <field name="name">Carol White Ltd</field>
+            <field name="phone">+44-20-7946-0958</field>
+        </record>
+
+        <!-- Duplicate product pair: same name -->
+        <record id="demo_product_widget_1" model="product.product">
+            <field name="name">Blue Widget</field>
+        </record>
+        <record id="demo_product_widget_2" model="product.product">
+            <field name="name">Blue Widget</field>
+        </record>
+
+    </data>
+</odoo>

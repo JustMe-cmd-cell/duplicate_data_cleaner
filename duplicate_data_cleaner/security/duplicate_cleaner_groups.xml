@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Group: Duplicate Cleaner User -->
+        <record id="group_duplicate_cleaner_user" model="res.groups">
+            <field name="name">Duplicate Cleaner User</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Group: Duplicate Cleaner Manager -->
+        <record id="group_duplicate_cleaner_manager" model="res.groups">
+            <field name="name">Duplicate Cleaner Manager</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="implied_ids" eval="[(4, ref('group_duplicate_cleaner_user'))]"/>
+        </record>
+    </data>
+</odoo>

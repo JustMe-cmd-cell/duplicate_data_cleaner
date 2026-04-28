@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         Dashboard – Client Action
+         The dashboard is rendered by the OWL component
+         DuplicateDashboard (tag: duplicate_cleaner_dashboard).
+         ============================================================ -->
+    <record id="action_duplicate_dashboard" model="ir.actions.client">
+        <field name="name">Duplicates Dashboard</field>
+        <field name="tag">duplicate_cleaner_dashboard</field>
+    </record>
+</odoo>

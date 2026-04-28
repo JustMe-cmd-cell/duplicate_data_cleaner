@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Cron: Automatic daily duplicate scan -->
+        <record id="cron_duplicate_scan" model="ir.cron">
+            <field name="name">Duplicate Cleaner: Daily Scan</field>
+            <field name="model_id" ref="duplicate_data_cleaner.model_duplicate_group"/>
+            <field name="state">code</field>
+            <field name="code">env['duplicate.scanner'].scan_all()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">False</field>
+            <!-- Inactive by default; admin can enable from Settings > Technical > Cron Jobs -->
+        </record>
+    </data>
+</odoo>

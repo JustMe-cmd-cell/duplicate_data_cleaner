@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <!-- ============================================================
+         DuplicateComparisonWidget template
+         Renders a comparison table: one column per duplicate record.
+         Highlighted cells = values that differ across records.
+         ============================================================ -->
+    <t t-name="duplicate_data_cleaner.DuplicateComparisonWidget">
+        <div class="o_duplicate_comparison_widget">
+            <t t-if="state.loading">
+                <div class="o_loading text-muted p-3">
+                    <i class="fa fa-spinner fa-spin me-2"/>Loading records…
+                </div>
+            </t>
+            <t t-elif="state.records.length === 0">
+                <div class="text-muted p-3">No duplicate records found in this group.</div>
+            </t>
+            <t t-else="">
+                <div class="table-responsive">
+                    <table class="table table-bordered o_duplicate_table">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:130px">Field</th>
+                                <t t-foreach="state.records" t-as="rec" t-key="rec.id">
+                                    <th class="text-center">
+                                        <div t-if="!rec.is_archived">
+                                            <input type="radio"
+                                                   name="master_selector"
+                                                   t-att-value="rec.record_id"
+                                                   t-att-checked="state.masterRecordId === rec.record_id"
+                                                   t-on-change="() => onSelectMaster(rec.record_id)"
+                                                   class="form-check-input me-1"/>
+                                            <span class="fw-bold" t-esc="rec.record_name or 'Record #' + rec.record_id"/>
+                                            <t t-if="state.masterRecordId === rec.record_id">
+                                                <span class="badge bg-primary ms-1">Master</span>
+                                            </t>
+                                        </div>
+                                        <div t-else="" class="text-muted">
+                                            <i class="fa fa-archive me-1"/>
+                                            <span t-esc="rec.record_name or 'Record #' + rec.record_id"/>
+                                            <span class="badge bg-secondary ms-1">Archived</span>
+                                        </div>
+                                    </th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- One row per comparison field -->
+                            <tr t-foreach="['record_name','record_email','record_phone','record_ref']"
+                                t-as="field" t-key="field">
+                                <td class="fw-semibold text-muted small">
+                                    <t t-esc="{'record_name':'Name','record_email':'Email','record_phone':'Phone','record_ref':'Reference'}[field]"/>
+                                </td>
+                                <t t-foreach="state.records" t-as="rec" t-key="rec.id">
+                                    <td t-att-class="'text-center ' + (_isDifferent(field, rec[field]) ? 'table-warning' : '')">
+                                        <span t-esc="rec[field] or '—'"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-muted small mt-1">
+                    <i class="fa fa-info-circle me-1"/>
+                    Amber cells indicate differences between records.
+                    Select the radio button above a column to set it as the master.
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <!-- ============================================================
+         DuplicateDashboard template
+         Simple KPI cards + scan button.
+         ============================================================ -->
+    <t t-name="duplicate_data_cleaner.DuplicateDashboard">
+        <div class="o_action o_duplicate_dashboard p-4">
+            <div class="o_control_panel_main_buttons mb-4 d-flex gap-2">
+                <button class="btn btn-primary"
+                        t-on-click="onScanClick"
+                        t-att-disabled="state.loading">
+                    <i class="fa fa-search me-1"/>
+                    <t t-if="state.loading">Scanning…</t>
+                    <t t-else="">Scan for Duplicates</t>
+                </button>
+                <button class="btn btn-secondary" t-on-click="onViewGroupsClick">
+                    <i class="fa fa-list me-1"/>View Duplicate Groups
+                </button>
+            </div>
+
+            <t t-if="state.loading and !state.data">
+                <div class="text-muted">
+                    <i class="fa fa-spinner fa-spin me-2"/>Loading dashboard…
+                </div>
+            </t>
+            <t t-elif="state.data">
+                <!-- KPI Row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-warning h-100">
+                            <div class="card-body text-center">
+                                <div class="display-5 fw-bold text-warning"
+                                     t-esc="state.data.pending_groups"/>
+                                <div class="text-muted small mt-1">Pending Groups</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-success h-100">
+                            <div class="card-body text-center">
+                                <div class="display-5 fw-bold text-success"
+                                     t-esc="state.data.merged_groups"/>
+                                <div class="text-muted small mt-1">Merged Groups</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-secondary h-100">
+                            <div class="card-body text-center">
+                                <div class="display-5 fw-bold text-secondary"
+                                     t-esc="state.data.ignored_groups"/>
+                                <div class="text-muted small mt-1">Ignored Groups</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-info h-100">
+                            <div class="card-body text-center">
+                                <div class="display-5 fw-bold text-info"
+                                     t-esc="state.data.history.records_merged"/>
+                                <div class="text-muted small mt-1">Records Merged (30 days)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- By Model -->
+                <div class="card mb-4">
+                    <div class="card-header fw-semibold">Pending Duplicates by Model</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 d-flex align-items-center gap-3">
+                                <i class="fa fa-users fa-2x text-primary"/>
+                                <div>
+                                    <div class="fw-bold"
+                                         t-esc="state.data.by_model['res.partner']"/>
+                                    <div class="text-muted small">Contacts / Companies</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center gap-3">
+                                <i class="fa fa-cube fa-2x text-success"/>
+                                <div>
+                                    <div class="fw-bold"
+                                         t-esc="state.data.by_model['product.product']"/>
+                                    <div class="text-muted small">Products</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

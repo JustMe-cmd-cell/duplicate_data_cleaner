@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_duplicate_group_user,duplicate.group user,model_duplicate_group,base.group_user,1,1,1,1
+access_duplicate_record_user,duplicate.record user,model_duplicate_record,base.group_user,1,1,1,1
+access_duplicate_merge_history_user,duplicate.merge.history user,model_duplicate_merge_history,base.group_user,1,1,1,1

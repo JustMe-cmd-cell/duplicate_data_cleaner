@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         Merge History – List View
+         ============================================================ -->
+    <record id="view_duplicate_merge_history_list" model="ir.ui.view">
+        <field name="name">duplicate.merge.history.list</field>
+        <field name="model">duplicate.merge.history</field>
+        <field name="arch" type="xml">
+            <tree string="Merge History">
+                <field name="merge_date"/>
+                <field name="model_name"/>
+                <field name="master_record_name"/>
+                <field name="performed_by"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-muted="state == 'undone'"/>
+                <button name="action_undo"
+                        type="object"
+                        string="Undo Merge"
+                        icon="fa-undo"
+                        invisible="state == 'undone'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Merge History – Form View
+         ============================================================ -->
+    <record id="view_duplicate_merge_history_form" model="ir.ui.view">
+        <field name="name">duplicate.merge.history.form</field>
+        <field name="model">duplicate.merge.history</field>
+        <field name="arch" type="xml">
+            <form string="Merge History Entry">
+                <header>
+                    <button name="action_undo"
+                            type="object"
+                            string="Undo This Merge"
+                            class="btn-warning"
+                            invisible="state == 'undone'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="done,undone"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Merge Details">
+                            <field name="merge_date"/>
+                            <field name="model_name"/>
+                            <field name="master_record_id"/>
+                            <field name="master_record_name"/>
+                            <field name="performed_by"/>
+                        </group>
+                        <group string="Related Group">
+                            <field name="group_id"/>
+                        </group>
+                    </group>
+                    <group string="Merged Record IDs">
+                        <field name="merged_record_ids_json" nolabel="1" readonly="1"
+                               widget="char"/>
+                    </group>
+                    <group string="Data Snapshot (JSON)">
+                        <field name="field_values_snapshot" nolabel="1" readonly="1"
+                               widget="text"
+                               invisible="not field_values_snapshot"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Window Action – Merge History
+         ============================================================ -->
+    <record id="action_merge_history" model="ir.actions.act_window">
+        <field name="name">Merge History</field>
+        <field name="res_model">duplicate.merge.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No merge operations recorded yet.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,49 @@
+/* duplicate_cleaner.css
+   =====================
+   Minimal styling for the Duplicate Data Cleaner module.
+   We rely on Bootstrap 5 (bundled with Odoo 16) for layout. */
+
+/* ----------------------------------------------------------------
+   Comparison form
+   ---------------------------------------------------------------- */
+.o_duplicate_comparison_form .o_form_sheet {
+    max-width: 1200px;
+}
+
+/* ----------------------------------------------------------------
+   Comparison table
+   ---------------------------------------------------------------- */
+.o_duplicate_table thead th {
+    vertical-align: middle;
+    background-color: #f8f9fa;
+}
+
+.o_duplicate_table td,
+.o_duplicate_table th {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+/* Highlight differing cells */
+.o_duplicate_table td.table-warning {
+    background-color: #fff3cd !important;
+    border-left: 3px solid #ffc107;
+}
+
+/* ----------------------------------------------------------------
+   Dashboard
+   ---------------------------------------------------------------- */
+.o_duplicate_dashboard .card {
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.2s;
+}
+
+.o_duplicate_dashboard .card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.o_duplicate_dashboard .display-5 {
+    font-size: 2rem;
+    line-height: 1.2;
+}

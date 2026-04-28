@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================
+         Duplicate Group - List View
+         ================================================================ -->
+    <record id="view_duplicate_group_list" model="ir.ui.view">
+        <field name="name">duplicate.group.list</field>
+        <field name="model">duplicate.group</field>
+        <field name="arch" type="xml">
+            <tree string="Duplicate Groups"
+                  decoration-muted="state == 'ignored'"
+                  decoration-success="state == 'merged'"
+                  decoration-warning="state == 'pending'">
+                <field name="name"/>
+                <field name="model_name"/>
+                <field name="detection_method"/>
+                <field name="record_count"/>
+                <field name="confidence_score"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-warning="state == 'pending'"
+                       decoration-success="state == 'merged'"
+                       decoration-muted="state == 'ignored'"/>
+                <button name="action_open_comparison"
+                        type="object"
+                        string="Review"
+                        icon="fa-eye"
+                        invisible="state != 'pending'"/>
+                <button name="action_ignore"
+                        type="object"
+                        string="Ignore"
+                        icon="fa-ban"
+                        invisible="state != 'pending'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Duplicate Group - Form / Comparison View
+         ================================================================ -->
+    <record id="view_duplicate_group_comparison_form" model="ir.ui.view">
+        <field name="name">duplicate.group.comparison.form</field>
+        <field name="model">duplicate.group</field>
+        <field name="arch" type="xml">
+            <form string="Review Duplicates" class="o_duplicate_comparison_form">
+                <header>
+                    <button name="action_merge"
+                            type="object"
+                            string="Merge Selected"
+                            class="btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_ignore"
+                            type="object"
+                            string="Ignore Group"
+                            class="btn-warning"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,merged,ignored"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Detection Info">
+                            <field name="model_name"/>
+                            <field name="detection_method"/>
+                            <field name="confidence_score"/>
+                        </group>
+                        <group string="Merge Settings">
+                            <field name="master_record_id"
+                                   string="Master Record ID"
+                                   help="Enter the ID of the record to keep."
+                                   readonly="state != 'pending'"/>
+                        </group>
+                    </group>
+
+                    <!-- Duplicate records comparison table -->
+                    <field name="record_ids" nolabel="1">
+                        <tree string="Duplicate Records" editable="bottom">
+                            <field name="record_id" string="Record ID" readonly="1"/>
+                            <field name="record_name" string="Name" readonly="1"/>
+                            <field name="record_email" string="Email" readonly="1"/>
+                            <field name="record_phone" string="Phone" readonly="1"/>
+                            <field name="record_ref" string="Reference" readonly="1"/>
+                            <field name="is_master" string="Master"/>
+                            <field name="is_archived" string="Archived" readonly="1"/>
+                        </tree>
+                    </field>
+
+                    <notebook>
+                        <page string="Merge History"
+                              invisible="not merge_history_ids">
+                            <field name="merge_history_ids" readonly="1">
+                                <tree>
+                                    <field name="merge_date"/>
+                                    <field name="master_record_name"/>
+                                    <field name="performed_by"/>
+                                    <field name="state"/>
+                                    <button name="action_undo"
+                                            type="object"
+                                            string="Undo"
+                                            icon="fa-undo"
+                                            invisible="state == 'undone'"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Duplicate Group - Search View
+         ================================================================ -->
+    <record id="view_duplicate_group_search" model="ir.ui.view">
+        <field name="name">duplicate.group.search</field>
+        <field name="model">duplicate.group</field>
+        <field name="arch" type="xml">
+            <search string="Search Duplicate Groups">
+                <field name="name"/>
+                <field name="model_name"/>
+                <filter string="Pending" name="pending"
+                        domain="[('state', '=', 'pending')]"/>
+                <filter string="Merged" name="merged"
+                        domain="[('state', '=', 'merged')]"/>
+                <filter string="Ignored" name="ignored"
+                        domain="[('state', '=', 'ignored')]"/>
+                <separator/>
+                <filter string="Contacts" name="contacts"
+                        domain="[('model_name', '=', 'res.partner')]"/>
+                <filter string="Products" name="products"
+                        domain="[('model_name', '=', 'product.product')]"/>
+                <separator/>
+                <filter string="High Confidence" name="high_confidence"
+                        domain="[('confidence_score', '>=', 0.9)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Model" name="group_model"
+                            context="{'group_by': 'model_name'}"/>
+                    <filter string="Detection Method" name="group_method"
+                            context="{'group_by': 'detection_method'}"/>
+                    <filter string="Status" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Window Action - Duplicate Groups
+         ================================================================ -->
+    <record id="action_duplicate_groups" model="ir.actions.act_window">
+        <field name="name">Duplicate Groups</field>
+        <field name="res_model">duplicate.group</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_duplicate_group_search"/>
+        <field name="context">{'search_default_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No duplicate groups found.
+            </p>
+            <p>
+                Click <b>Scan for Duplicates</b> to start the detection process.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Server Action - Scan for Duplicates
+         ================================================================ -->
+    <record id="action_scan_duplicates" model="ir.actions.server">
+        <field name="name">Scan for Duplicates</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+env['duplicate.scanner'].scan_all()
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Server Action - Bulk Merge (list view action)
+         ================================================================ -->
+    <record id="action_bulk_merge_groups" model="ir.actions.server">
+        <field name="name">Merge Selected Groups</field>
+        <field name="model_id" ref="duplicate_data_cleaner.model_duplicate_group"/>
+        <field name="binding_model_id" ref="duplicate_data_cleaner.model_duplicate_group"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_bulk_merge()
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Server Action - Ignore Selected (list view action)
+         ================================================================ -->
+    <record id="action_ignore_groups" model="ir.actions.server">
+        <field name="name">Ignore Selected Groups</field>
+        <field name="model_id" ref="duplicate_data_cleaner.model_duplicate_group"/>
+        <field name="binding_model_id" ref="duplicate_data_cleaner.model_duplicate_group"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.write({'state': 'ignored'})
+        </field>
+    </record>
+</odoo>
