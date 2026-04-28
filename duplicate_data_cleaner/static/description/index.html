@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+
+<!-- ======================================================
+     HERO BANNER
+     ====================================================== -->
+<section style="background:linear-gradient(135deg,#6610f2 0%,#0d6efd 100%);
+                padding:48px 32px;border-radius:8px;text-align:center;margin-bottom:32px;">
+    <h1 style="color:#fff;font-size:2.4rem;font-weight:700;margin:0 0 12px;">
+        Duplicate Data Cleaner
+    </h1>
+    <p style="color:rgba(255,255,255,.85);font-size:1.15rem;max-width:640px;margin:0 auto;">
+        Automatically detect, review, and merge duplicate contacts, companies,
+        and products — keeping your Odoo database clean and accurate.
+    </p>
+</section>
+
+<!-- ======================================================
+     KEY FEATURES
+     ====================================================== -->
+<section style="margin-bottom:40px;">
+    <h2 style="color:#6610f2;border-bottom:2px solid #6610f2;padding-bottom:6px;">Key Features</h2>
+
+    <table style="width:100%;border-collapse:collapse;margin-top:16px;">
+        <tr>
+            <td style="width:50%;vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">🔍 Smart Duplicate Detection</h3>
+                <p>Three detection engines work together:</p>
+                <ul>
+                    <li><strong>Email match</strong> — exact email address comparison (case-insensitive)</li>
+                    <li><strong>Phone match</strong> — normalised phone number comparison (strips formatting)</li>
+                    <li><strong>Name similarity</strong> — fuzzy Levenshtein-based matching with configurable threshold</li>
+                </ul>
+            </td>
+            <td style="width:50%;vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">🔀 One-Click Merge</h3>
+                <p>Select the master record and merge with a single button press:</p>
+                <ul>
+                    <li>All related records (sales, invoices, purchases…) are re-linked to the master</li>
+                    <li>Duplicate records are soft-archived (never deleted)</li>
+                    <li>Full merge history is stored for audit and undo</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">📊 Dashboard &amp; Statistics</h3>
+                <ul>
+                    <li>KPI cards: pending groups, merged groups, ignored groups</li>
+                    <li>Breakdown by model (Contacts vs Products)</li>
+                    <li>Recent merge history at a glance</li>
+                    <li>Scan button directly on the dashboard</li>
+                </ul>
+            </td>
+            <td style="vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">⏮ Undo &amp; Audit Trail</h3>
+                <ul>
+                    <li>Every merge stores a full JSON snapshot of all field values</li>
+                    <li>One-click undo: re-activates the archived duplicates</li>
+                    <li>Audit log shows who merged what and when</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">⚙️ Automated Scheduled Scans</h3>
+                <ul>
+                    <li>Built-in daily cron job (disabled by default, enable with one click)</li>
+                    <li>Zero-configuration: just install and activate</li>
+                </ul>
+            </td>
+            <td style="vertical-align:top;padding:12px;">
+                <h3 style="color:#0d6efd;margin:0 0 6px;">🛡️ Safe &amp; Non-Destructive</h3>
+                <ul>
+                    <li>Records are archived, never permanently deleted</li>
+                    <li>Confidence score helps prioritise which groups to review first</li>
+                    <li>Ignore groups you don't want to merge</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<!-- ======================================================
+     SUPPORTED MODELS
+     ====================================================== -->
+<section style="background:#f8f9fa;border-radius:8px;padding:24px 32px;margin-bottom:40px;">
+    <h2 style="color:#6610f2;margin:0 0 16px;">Supported Record Types</h2>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:180px;background:#fff;border:1px solid #dee2e6;
+                    border-radius:6px;padding:16px;text-align:center;">
+            <div style="font-size:2rem;">👤</div>
+            <strong>Contacts &amp; Companies</strong>
+            <p style="color:#6c757d;font-size:.9rem;margin:4px 0 0;">res.partner</p>
+        </div>
+        <div style="flex:1;min-width:180px;background:#fff;border:1px solid #dee2e6;
+                    border-radius:6px;padding:16px;text-align:center;">
+            <div style="font-size:2rem;">📦</div>
+            <strong>Products</strong>
+            <p style="color:#6c757d;font-size:.9rem;margin:4px 0 0;">product.product</p>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================
+     HOW IT WORKS
+     ====================================================== -->
+<section style="margin-bottom:40px;">
+    <h2 style="color:#6610f2;border-bottom:2px solid #6610f2;padding-bottom:6px;">How It Works</h2>
+    <ol style="line-height:2;font-size:1rem;margin-top:16px;">
+        <li><strong>Install</strong> the module — no extra configuration needed.</li>
+        <li>Go to <strong>Duplicate Cleaner → Dashboard</strong> and click <em>Scan for Duplicates</em>.</li>
+        <li>The scanner checks all contacts and products for matching emails, phones, and similar names.</li>
+        <li>Review each <strong>Duplicate Group</strong> — see all candidates side by side.</li>
+        <li>Select the <strong>Master Record</strong> (the one to keep) and click <em>Merge Selected</em>.</li>
+        <li>All FK references are re-linked automatically. Duplicates are archived. Done.</li>
+    </ol>
+</section>
+
+<!-- ======================================================
+     TECHNICAL INFO
+     ====================================================== -->
+<section style="background:#f8f9fa;border-radius:8px;padding:24px 32px;margin-bottom:40px;">
+    <h2 style="color:#6610f2;margin:0 0 12px;">Technical Information</h2>
+    <table style="width:100%;border-collapse:collapse;">
+        <tr>
+            <td style="padding:6px 12px;font-weight:600;width:180px;">Odoo Version</td>
+            <td style="padding:6px 12px;">17.0</td>
+        </tr>
+        <tr style="background:#fff;">
+            <td style="padding:6px 12px;font-weight:600;">License</td>
+            <td style="padding:6px 12px;">LGPL-3</td>
+        </tr>
+        <tr>
+            <td style="padding:6px 12px;font-weight:600;">Dependencies</td>
+            <td style="padding:6px 12px;">base, mail, product, web</td>
+        </tr>
+        <tr style="background:#fff;">
+            <td style="padding:6px 12px;font-weight:600;">Auto-install</td>
+            <td style="padding:6px 12px;">No</td>
+        </tr>
+        <tr>
+            <td style="padding:6px 12px;font-weight:600;">External services</td>
+            <td style="padding:6px 12px;">None — 100% on-premise</td>
+        </tr>
+    </table>
+</section>
+
+<!-- ======================================================
+     SUPPORT
+     ====================================================== -->
+<section style="text-align:center;padding:24px;background:linear-gradient(135deg,#6610f2 0%,#0d6efd 100%);
+                border-radius:8px;color:#fff;">
+    <h2 style="margin:0 0 8px;color:#fff;">Need Help?</h2>
+    <p style="margin:0;font-size:1rem;">
+        Contact us at
+        <a href="mailto:hdthomasgaming@gmail.com" style="color:#ffc107;font-weight:600;">
+            hdthomasgaming@gmail.com
+        </a>
+    </p>
+</section>
+
+</body>
+</html>
