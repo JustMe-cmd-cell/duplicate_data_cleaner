@@ -44,5 +44,7 @@ Features:
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
+    'price': 150.0,
+    'currency': 'EUR',
     'images': ['static/description/banner.png'],
 }
